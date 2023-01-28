@@ -11,16 +11,43 @@ $(document).ready(function () {
   // function? How can DOM traversal be used to get the "hour-x" id of the
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
+  var storedEvents = [];
+  if(localStorage.getItem("schedule") != null){
+    storedEvents = JSON.parse(localStorage.getItem("schedule"));
+    for(i = 0; i < storedEvents.length; i++){
+        console.log(storedEvents[i].time)
+        var testStorage = $('#' + storedEvents[i].time)
+        console.log(testStorage)
+       // testStorage.children('textarea').val()storedEvents[i].textEvent;
+       testStorage.children('textarea').val(storedEvents[i].textEvent);
+    
+    }
+  }
+  console.log(storedEvents)
 
   var getBtn = $('.btn')
-      console.log(getBtn)
+      //console.log(getBtn)
       getBtn.on("click", function(){
-      var getParentID = ($(this).parent().attr('id'))
-      console.log(getParentID);
-      var getTextArea = ($(this).siblings(".description").val())
-      console.log("HERE: ", getTextArea)
-      localStorage.setItem(getParentID, getTextArea )
-  })
+          var getParentID = ($(this).parent().attr('id'))
+          //console.log(getParentID);
+          var getTextArea = ($(this).siblings(".description").val())
+          console.log("HERE: ", getTextArea)
+          //localStorage.setItem(getParentID, getTextArea )
+
+          storedEvents = jQuery.grep(storedEvents , function (value) {
+            return value.time != getParentID;
+          });
+                    
+          storedEvents.push(
+              {
+                time: getParentID,
+                textEvent: getTextArea
+              }
+          )
+     
+          localStorage.setItem("schedule", JSON.stringify(storedEvents))
+
+    })
 
 
   //
@@ -32,9 +59,11 @@ $(document).ready(function () {
 
   var getHourPresent = parseInt(dayjs().format('H'))
   $('*[id*=hour]').each(function() {
-    var getNumericID = $(this).attr("id")
+    var getDivID = $(this).attr("id")
+    console.log(storedEvents.time)
+  
 
-    var getHourFromID = parseInt(getNumericPart(getNumericID));
+    var getHourFromID = parseInt(getNumericPart(getDivID));
       console.log(getHourFromID)
       console.log(getHourPresent)
 
@@ -59,6 +88,9 @@ $(document).ready(function () {
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
+
+
+
   //
   // TODO: Add code to display the current date in the header of the page.
 
@@ -68,3 +100,5 @@ currentDayEl.text(displayTime);
 
 });
 
+
+  setTimeout(function(){location.reload()},3600000 - ((new Date) % 3600000))
