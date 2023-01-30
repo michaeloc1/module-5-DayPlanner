@@ -54,6 +54,7 @@ $(document).ready(function () {
           localStorage.setItem(dateOfSchedule, JSON.stringify(storedEvents))
           var getIdtoDisplay = $("#displayMessage")
           getIdtoDisplay.text("Event stored in localstorage");
+          $('#dialog').dialog('open');
     })
 
 
@@ -80,7 +81,8 @@ $(document).ready(function () {
       } 
       else if (getHourFromID < getHourPresent){
       $(this).addClass('past')
-      $(this).children("textarea").attr("disabled", true)
+      $(this).children("textarea").attr("disabled", true);
+      $(this).children("button").prop('disabled', true);
     }
       else{
         $(this).addClass('future')
@@ -129,4 +131,15 @@ varGetID.removeClass('future')
 varGetID.addClass('present')
 varGetID2.removeClass('present')
 varGetID2.addClass('past');
+varGetID2.children("textarea").attr("disabled", true)
+varGetID2.children("button").prop('disabled', true);
 },3600000 - ((new Date) % 3600000))
+
+
+  $("#dialog").dialog({
+      modal: true,
+      autoOpen: false,
+      title: "Event Add",
+      width: 300,
+      height: 150
+  });
