@@ -12,8 +12,11 @@ $(document).ready(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
   var storedEvents = [];
-  if(localStorage.getItem("schedule") != null){
-    storedEvents = JSON.parse(localStorage.getItem("schedule"));
+ // if(localStorage.getItem("schedule") != null){
+    //storedEvents = JSON.parse(localStorage.getItem("schedule"));
+    var dateOfSchedule = dayjs().format('MMDDYY')
+      if(localStorage.getItem(dateOfSchedule) != null){
+    storedEvents = JSON.parse(localStorage.getItem(dateOfSchedule));
     for(i = 0; i < storedEvents.length; i++){
         console.log(storedEvents[i].time)
         var testStorage = $('#' + storedEvents[i].time)
@@ -24,6 +27,8 @@ $(document).ready(function () {
     }
   }
   console.log(storedEvents)
+ // var dateOfSchedule = dayjs().format('MMDDYY')
+  console.log(dateOfSchedule)
 
   var getBtn = $('.btn')
       //console.log(getBtn)
@@ -45,8 +50,10 @@ $(document).ready(function () {
               }
           )
      
-          localStorage.setItem("schedule", JSON.stringify(storedEvents))
-
+          //localStorage.setItem("schedule", JSON.stringify(storedEvents))
+          localStorage.setItem(dateOfSchedule, JSON.stringify(storedEvents))
+          var getIdtoDisplay = $("#displayMessage")
+          getIdtoDisplay.text("Event stored in localstorage");
     })
 
 
@@ -58,6 +65,7 @@ $(document).ready(function () {
   // current hour in 24-hour time?
 
   var getHourPresent = parseInt(dayjs().format('H'))
+  //getHourPresent = getHourPresent - 5
   $('*[id*=hour]').each(function() {
     var getDivID = $(this).attr("id")
     console.log(storedEvents.time)
@@ -101,4 +109,24 @@ currentDayEl.text(displayTime);
 });
 
 
-  setTimeout(function(){location.reload()},3600000 - ((new Date) % 3600000))
+
+//var varGetID = $('*[id*=' +  getHourPresent + ']')
+//console.log(varGetID)
+//varGetID.css('font-family', 'cursive')
+//varGetID.addClass('pickles')
+
+//setTimeout(function(){location.reload()},3600000 - ((new Date) % 3600000))
+
+  setTimeout(function(){alert("New Hour 1")},3600000 - ((new Date) % 3600000))
+
+setTimeout(function(){
+ alert("New Hour2")
+ var getHourPresent2 = parseInt(dayjs().format('H'))
+ var getHourpast = getHourPresent2 - 1
+var varGetID = $('*[id*=' +  getHourPresent2 + ']')
+var varGetID2 =  $('*[id*=' +  getHourpast + ']')
+varGetID.removeClass('future')
+varGetID.addClass('present')
+varGetID2.removeClass('present')
+varGetID2.addClass('past');
+},3600000 - ((new Date) % 3600000))
