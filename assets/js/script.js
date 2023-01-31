@@ -84,13 +84,14 @@ var displayTime = dayjs().format('dddd, MMMM D YYYY');
 var currentDayEl = $('#currentDay');
 currentDayEl.text(displayTime);
 
-});
+
 
 
 //this is code for when the page has already opened and the hour changes
 //it will run on every new hour.  I get the present time and hour past and use
 //them to get the divs of the hours. I then remove classes and add classes
 //and disable the textarea and button of hour past
+let d3 = dayjs(new Date());
 setTimeout(function(){
     var getHourPresent2 = parseInt(dayjs().format('H'));
     var getHourpast = getHourPresent2 - 1;
@@ -102,7 +103,7 @@ setTimeout(function(){
     varGetID2.addClass('past');
     varGetID2.children("textarea").attr("disabled", true);
     varGetID2.children("button").prop('disabled', true);
-},3600000 - ((new Date) % 3600000))
+},3600000 - ((d3) % 3600000))
 
 //this formats the dialog I have it set to false at start and will open
 //on button click
@@ -112,4 +113,6 @@ setTimeout(function(){
       title: "Event Add",
       width: 300,
       height: 150
+  });
+
   });
